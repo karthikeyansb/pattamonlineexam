@@ -25,7 +25,7 @@ SECRET_KEY = ')3k4f%98-=2&m!!jet!461vj$^frt1c+c)a#9iqrym)0+$@9lu'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.43.104','127.0.0.1']
+ALLOWED_HOSTS = ['192.168.43.104','127.0.0.1','https://pattam-exam.herokuapp.com/']
 
 
 # Application definition
@@ -86,13 +86,22 @@ WSGI_APPLICATION = 'OnlineExam.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
+SECRET_KEY = config('SECRET_KEY')
+DEBUG = config('DEBUG', default=False, cast=bool)
+DATABASES = {
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL')
+    )
+}
+
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
+"""
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -140,4 +149,4 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "OnlineExam/media_cdn")
 STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "OnlineExam/static_cdn")
 
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
